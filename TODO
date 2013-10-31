@@ -1,0 +1,6 @@
+
+
+ * Log firmware output to ~/.archas/archas.log using python logging facility which allows rotating
+ * Prevent frequent cron job from filling up the logs. Create own log with logrotate, see:
+   * http://serverfault.com/questions/31334/how-can-i-prevent-cron-from-filling-up-my-syslog
+ * Sent temperature alerts via SMS using Google Voice: http://code.google.com/p/pygooglevoice/

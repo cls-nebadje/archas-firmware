@@ -1,0 +1,2 @@
+# Run firmware every minute
+*/1 * * * * olfe cd /home/olfe/projects/archas-firmware/src && ./main.py 2>&1 | tee -a /home/olfe/.archas/archas.log
