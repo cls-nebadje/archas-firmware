@@ -97,4 +97,22 @@ if __name__ == '__main__':
     
     if sync:
         archas.cloud.sync(syncFolder)
+        
+    try:
+        lapseDir = config.get(CONF_KEY_WCAM_LAPSE_DIR)
+        lapseDir = os.path.join(CONFIG_DIR, lapseDir)
+        videoOutPath = ""
+        startTimeS = time.time()
+        rangeBackS = 2 * 24 * 60 * 60
+        ok = archas.webcam.timeLapseRender(videoOutPath,
+                                           lapseDir,
+                                           startTimeS,
+                                           rangeBackS,
+                                           deleteFilesAfterRendering=False)
+        
+        # ATTENTION: WE HAVE TO TAKE CARE THAT WE DON'T RUN SYNC IN PARALLEL ...
+        
+    except Exception as e:
+        archas.logDebug("EXCEPTION: %s" % str(e))
     
+    archas.logDebug("Archas Firmware exit.")

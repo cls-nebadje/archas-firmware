@@ -79,7 +79,7 @@ def capture(configFile, outputPaths, temperature):
         archas.logError("Capture failed with %s %s (%i)" %(out, err, p.returncode))
         return False
     
-    archas.logDebug("%s %s" % (out, err))
+    archas.logDebug("Capture: %s\n%s" % (out, err))
     
     picFile.seek(0, os.SEEK_END)
     picBytes = picFile.tell()

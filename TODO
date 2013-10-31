@@ -4,3 +4,8 @@
  * Prevent frequent cron job from filling up the logs. Create own log with logrotate, see:
    * http://serverfault.com/questions/31334/how-can-i-prevent-cron-from-filling-up-my-syslog
  * Sent temperature alerts via SMS using Google Voice: http://code.google.com/p/pygooglevoice/
+ * mencoder mf://*.jpeg -mf w=1280:h=720:fps=25:type=jpg -ovc x264 -x264encopts pass=1:bitrate=8000:crf=20 -nosound -lavfopts format=mp4 -o video_output_file.mp4
+  *  Creating an MPEG-4 file from explicit list of JPEG files (list.txt in current directory contains the list of files to use as source, one per line):
+
+     mencoder mf://@list.txt -mf w=800:h=600:fps=25:type=jpg -ovc lavc -lavcopts vcodec=mpeg4:mbd=2:trell -oac copy -o output.avi
+  

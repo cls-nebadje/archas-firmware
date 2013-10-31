@@ -20,5 +20,5 @@ def sync(path):
         archas.logError("Synchronizing failed with %s %s (%i)" %(out, err, p.returncode))
         return False
     
-    archas.logDebug("%s %s" % (out, err))
+    archas.logDebug("Synchronizing: %s\n%s" % (out, err))
     return True
