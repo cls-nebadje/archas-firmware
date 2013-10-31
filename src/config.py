@@ -140,4 +140,3 @@ class Status(archas.ConfigurationManager):
         state = archas.temperature.digitemp.createSensorState(sensors)
         self.set(STAT_KEY_CURRENT_SENSOR_STATE, state, sync=True)
     
-        
