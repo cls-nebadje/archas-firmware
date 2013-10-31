@@ -26,7 +26,8 @@ from config import Config, Status, \
 
 if __name__ == '__main__':
     
-    archas.logInfo("Archas Firmware (c) 2013 cls")
+    year = time.strftime("%Y")
+    archas.logInfo("Archas Firmware (c) 2013%s cls" % ("-%s" if year != "2013" else ""))
     
     config = Config()
     status = Status(config)
@@ -65,6 +66,7 @@ if __name__ == '__main__':
         else:
             temperature = u"%.2f \u00B0C" % sensors[sid][1]
         
+        wcSync = False
         outfiles = []
         if camLapseDue:
             lapseDir = config.get(CONF_KEY_WCAM_LAPSE_DIR)
@@ -77,8 +79,10 @@ if __name__ == '__main__':
             cloudFile = os.path.join(syncFolder,
                                      config.get(CONF_KEY_WCAM_CLOUD_FILE))
             outfiles.append(cloudFile)
-            sync = True
-        archas.webcam.capture(confPath, outfiles, temperature) 
+            wcSync = True
+        ok = archas.webcam.capture(confPath, outfiles, temperature)
+        if ok and wcSync:
+            sync = True 
     
     if graphDue:
         pdf = os.path.join(syncFolder,

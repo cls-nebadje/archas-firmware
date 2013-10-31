@@ -81,6 +81,12 @@ def capture(configFile, outputPaths, temperature):
     
     archas.logDebug("%s %s" % (out, err))
     
+    picFile.seek(0, os.SEEK_END)
+    picBytes = picFile.tell()
+    if picBytes < 100:
+        archas.logError("Capture failed without returning error code. But output image has no (%i bytes) of data.")
+        return False
+    
     for out in outputPaths:
         import shutil
         shutil.copy(picFile.name, out)

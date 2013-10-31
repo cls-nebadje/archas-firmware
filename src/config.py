@@ -126,7 +126,7 @@ class Status(archas.ConfigurationManager):
     def isDue(self, key, update=True):
         tDelta = time.time() - self._getLastRun(key)
         tMin = self.cfg.get(key)
-        archas.logDebug("%s: %.2f, current delta: %.2f" % (key, tMin, tDelta))
+        archas.logDebug("%35s: %.2f, delta: %.2f" % (key, tMin, tDelta))
         due = tDelta >= tMin
         if due and update:
             self.updateLastRun(key)
