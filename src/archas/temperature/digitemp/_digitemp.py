@@ -35,7 +35,7 @@ ROM 1 0x10 0x2E 0x7D 0xB5 0x02 0x08 0x00 0xF6
 DIGITEMPCMD = "/usr/bin/digitemp_DS9097"
         
 #Oct 28 23:59:39 Sensor 0 C: 21.75
-DIGITEMP_REGEX = re.compile(r"([a-zA-Z]+\s[0-9]+\s[0-9]+:[0-9]+:[0-9]+) Sensor\s([0-9]+)\sC:\s([0-9]+\.*[0-9]*)")
+DIGITEMP_REGEX = re.compile(r"([a-zA-Z]+\s[0-9]+\s[0-9]+:[0-9]+:[0-9]+) Sensor\s([0-9]+)\sC:\s([-0-9]+\.*[0-9]*)")
 
 def parseLogLine(line):
     m = DIGITEMP_REGEX.search(line)

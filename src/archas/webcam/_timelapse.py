@@ -43,14 +43,15 @@ def timeLapseRender(videoOutPath,
         fileListFile.write("%s\n" % f)
     
     cmd = _TIME_LAPSE_ENCODER_CMD % (fileListFile.name, videoOutPath)
+    cmd = shlex.split(cmd)
+    
     archas.logDebug("Rendering time lapse from files in '%s' to '%s'..." % (fileListFile.name, videoOutPath))
-    archas.logDebug("Render command: %s" % cmd)
+    archas.logDebug("Render command: %s" % str(cmd))
     
     ok = False    
     
-    # TODO: Render
     if 0:
-        p = subprocess.Popen(shlex.split(cmd),
+        p = subprocess.Popen(cmd,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
         out, err = p.communicate()
