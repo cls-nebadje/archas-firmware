@@ -7,6 +7,14 @@ Created on Oct 30, 2013
 import re, datetime, os, commands
 import archas
 
+# Detect sensors on LAN:
+#
+#     digitemp_DS9097 -w -s /dev/ttyS0
+#
+# Read all sensors listed in config file
+#
+#     digitemp_DS9097 -q -c <config> -a
+
 _DIGITEMP_CONFIG_TEMPLATE = \
 """#
 # Archas digitemp configuration template
@@ -24,12 +32,15 @@ LOG_FORMAT "%b %d %H:%M:%S Sensor %s C: %.2C"
 CNT_FORMAT "%b %d %H:%M:%S Sensor %s #%n %C"
 HUM_FORMAT "%b %d %H:%M:%S Sensor %s C: %.2C H: %h%%"
 
-SENSORS 2
+SENSORS 3
 
 # SERIAL PORT SENSOR
 ROM 0 0x10 0x28 0xAD 0xAB 0x02 0x08 0x00 0x37
 # OUTDOOR
 ROM 1 0x10 0x2E 0x7D 0xB5 0x02 0x08 0x00 0xF6
+# CELLAR
+ROM 2 0x10 0x56 0x4F 0xB5 0x02 0x08 0x00 0xC8
+
 """
 
 DIGITEMPCMD = "/usr/bin/digitemp_DS9097"
