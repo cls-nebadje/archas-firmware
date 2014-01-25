@@ -28,9 +28,9 @@ _DIGITEMP_CONFIG_TEMPLATE = \
 TTY /dev/ttyS0
 READ_TIME 1000
 LOG_TYPE 1
-LOG_FORMAT "%b %d %H:%M:%S Sensor %s C: %.2C"
-CNT_FORMAT "%b %d %H:%M:%S Sensor %s #%n %C"
-HUM_FORMAT "%b %d %H:%M:%S Sensor %s C: %.2C H: %h%%"
+LOG_FORMAT "%Y %b %d %H:%M:%S Sensor %s C: %.2C"
+CNT_FORMAT "%Y %b %d %H:%M:%S Sensor %s #%n %C"
+HUM_FORMAT "%Y %b %d %H:%M:%S Sensor %s C: %.2C H: %h%%"
 
 SENSORS 3
 
@@ -46,7 +46,7 @@ ROM 2 0x10 0x56 0x4F 0xB5 0x02 0x08 0x00 0xC8
 DIGITEMPCMD = "/usr/bin/digitemp_DS9097"
         
 #Oct 28 23:59:39 Sensor 0 C: 21.75
-DIGITEMP_REGEX = re.compile(r"([a-zA-Z]+\s[0-9]+\s[0-9]+:[0-9]+:[0-9]+) Sensor\s([0-9]+)\sC:\s([-0-9]+\.*[0-9]*)")
+DIGITEMP_REGEX = re.compile(r"([0-9]+\s[a-zA-Z]+\s[0-9]+\s[0-9]+:[0-9]+:[0-9]+) Sensor\s([0-9]+)\sC:\s([-0-9]+\.*[0-9]*)")
 
 def parseLogLine(line):
     m = DIGITEMP_REGEX.search(line)
@@ -54,7 +54,7 @@ def parseLogLine(line):
         date = m.group(1)
         sens = int(m.group(2))
         temp = float(m.group(3))
-        t = datetime.datetime.strptime("2013 %s" % date, '%Y %b %d %H:%M:%S')
+        t = datetime.datetime.strptime(date, '%Y %b %d %H:%M:%S')
         return (t, sens, temp)
     return None
 
