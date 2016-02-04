@@ -46,9 +46,12 @@ ROM 2 0x10 0x56 0x4F 0xB5 0x02 0x08 0x00 0xC8
 DIGITEMPCMD = "/usr/bin/digitemp_DS9097"
         
 #Oct 28 23:59:39 Sensor 0 C: 21.75
+#Feb 03 21:05:05 Sensor 3 C: -1.56
 DIGITEMP_REGEX = re.compile(r"([0-9]+\s[a-zA-Z]+\s[0-9]+\s[0-9]+:[0-9]+:[0-9]+) Sensor\s([0-9]+)\sC:\s([-0-9]+\.*[0-9]*)")
+DIGITEMP_REGEX2 = re.compile(r"([a-zA-Z]+\s[0-9]+\s[0-9]+:[0-9]+:[0-9]+) Sensor\s([0-9]+)\sC:\s([-0-9]+\.*[0-9]*)")
 
 def parseLogLine(line):
+    
     m = DIGITEMP_REGEX.search(line)
     if m != None:
         date = m.group(1)
@@ -56,6 +59,15 @@ def parseLogLine(line):
         temp = float(m.group(3))
         t = datetime.datetime.strptime(date, '%Y %b %d %H:%M:%S')
         return (t, sens, temp)
+    
+    m = DIGITEMP_REGEX2.search(line)
+    if m != None:        
+        date = "%i %s" % (datetime.datetime.now().year, m.group(1))
+        sens = int(m.group(2))
+        temp = float(m.group(3))
+        t = datetime.datetime.strptime(date, '%Y %b %d %H:%M:%S')
+        return (t, sens, temp)
+    
     return None
 
 def parseSensorNames(sensorNamesStr):
