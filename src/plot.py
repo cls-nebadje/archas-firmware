@@ -6,14 +6,41 @@ import sys, getopt, datetime
 
 # https://docs.python.org/3.3/library/argparse.html
 
-def usage():
-    print '%s -u <url> -p <plot.pdf>' % sys.argv[0]
-    print '%s -i <logfile> -p <plot.pdf>' % sys.argv[0]
-    print '%s -d -t -v' % sys.argv[0]
-    sys.exit(2)
+def usage(help=False):
+    print """ %s <options>
+ -u <url>               Input URL to file with sensor log data
+ --help=
+ 
+ -i <infile>            Input file with sensor log data
+ --infile=
+ 
+ -p <out.pdf>           Output file name.
+ --pdf= 
+ 
+ -t <start>[-<stop>]    Specify plot range. <start> and <stop> must be of
+                        the following format: %%Y.%%m.%%d[;%%H:%%M:%%S]
+ --time=
+ 
+ -d                     Use default URL
+ -v                     View resulting pdf with evince 
+ -h --help              Print this help message
+""" % sys.argv[0]
+    if not help:
+        exit(1)
+    else:
+        exit(0)
+
+def parseTime(tstr):
+    try:
+        t = datetime.datetime.strptime(tstr, '%Y.%m.%d %H:%M:%S')
+    except ValueError as e:
+        t = datetime.datetime.strptime(tstr, '%Y.%m.%d')
+    return t
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:],"du:i:p:vt",["url=","infile=", "pdf="])
+    opts, args = getopt.getopt(sys.argv[1:],
+                               "u:i:p:t:dvh",
+                               ["url=", "infile=", "pdf=", "time=", "help"])
 except getopt.GetoptError as e:
     usage()
     
@@ -36,16 +63,27 @@ for opt, arg in opts:
         print "using default URL:", url
     elif opt in ("-v"):
         view = True
-    elif opt in ("-t"):
-        pdf = "%s.pdf" % datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d_%H:%M")
+    elif opt in ("h", "help"):
+        usage(True)
+    elif opt in ("-t", "--time"):
+        arg = arg.split("-")
+        start = parseTime(arg[0])
+        if len(arg) == 2:
+            stop = parseTime(arg[1])
+        else:
+            stop = datetime.datetime.now()
+        prange = stop - start
 
 if (url is None and infile is None):
     usage()
 
-if pdf is None:
+if pdf is None and view:
     import tempfile
     _pdf = tempfile.NamedTemporaryFile(suffix=".pdf")
     pdf = _pdf.name
+else:
+    print "Temporary output file only available with -v"
+    usage()
 
 if url:
     import urllib2
